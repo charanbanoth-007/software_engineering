@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CareReq Studio</title>
+    <link rel="stylesheet" href="/static/styles.css?v=care-intake-2">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">+</span><span>CareReq Studio</span></div>
+      <p>Healthcare requirements planning and delivery advisory</p>
+      <a id="exportLink" class="icon-action is-hidden" title="Export project JSON" download>Export JSON</a>
+    </header>
+    <main>
+      <section class="workspace" aria-labelledby="workspace-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Care delivery workspace</p><h1 id="workspace-title">Design safer healthcare workflows</h1></div>
+          <span id="projectState" class="state">No project loaded</span>
+        </div>
+        <div class="agent-summary" aria-label="Project outcomes"><span><strong>Grounded in your context</strong> Use care-team needs and source documents to shape the project.</span><span><strong>Reviewed by people</strong> Requirements and risk findings remain drafts for expert review.</span><span><strong>Ready to plan</strong> Finish with a delivery recommendation and review gates.</span></div>
+        <form id="interviewStartForm" class="intake stage-content" data-stage="1">
+          <div class="interview-heading"><p class="eyebrow">Set up a healthcare project</p><p>Share the essentials first. We’ll ask a few focused follow-up questions next.</p></div>
+          <ol class="intake-progress" aria-label="Intake progress">
+            <li class="active" data-intake-indicator="1"><span>1</span><b>Care area</b></li>
+            <li data-intake-indicator="2"><span>2</span><b>Goals &amp; people</b></li>
+            <li data-intake-indicator="3"><span>3</span><b>Sources</b></li>
+          </ol>
+          <section class="intake-page" data-intake-page="1">
+            <div class="intake-page-heading"><span class="page-number">01</span><div><h2>What care area is this for?</h2><p>Choose the closest setting, then name the workflow you want to improve.</p></div></div>
+            <fieldset class="service-options">
+              <legend>Care setting</legend>
+              <label class="service-option"><input type="radio" name="serviceLine" value="Primary care" checked><span class="service-icon">＋</span><span><strong>Primary care</strong><small>Clinics and outpatient services</small></span></label>
+              <label class="service-option"><input type="radio" name="serviceLine" value="Hospital care"><span class="service-icon">⌂</span><span><strong>Hospital care</strong><small>Inpatient and acute workflows</small></span></label>
+              <label class="service-option"><input type="radio" name="serviceLine" value="Diagnostics"><span class="service-icon">◉</span><span><strong>Diagnostics</strong><small>Labs, imaging, and results</small></span></label>
+              <label class="service-option"><input type="radio" name="serviceLine" value="Virtual care"><span class="service-icon">▣</span><span><strong>Virtual care</strong><small>Telehealth and remote services</small></span></label>
+              <label class="service-option"><input type="radio" name="serviceLine" value="Care coordination"><span class="service-icon">↗</span><span><strong>Care coordination</strong><small>Referrals and follow-up</small></span></label>
+              <label class="service-option"><input type="radio" name="serviceLine" value="Medication services"><span class="service-icon">✚</span><span><strong>Medication services</strong><small>Prescribing and pharmacy</small></span></label>
+            </fieldset>
+            <label class="workflow-field">Workflow or service name<input id="functionality" placeholder="e.g. Follow-up after an abnormal lab result" required minlength="3"></label>
+          </section>
+          <section class="intake-page is-hidden" data-intake-page="2">
+            <div class="intake-page-heading"><span class="page-number">02</span><div><h2>What should improve?</h2><p>Describe the outcome you want and who needs to be involved.</p></div></div>
+            <div class="goal-fields">
+              <label>Care or operational goal<textarea id="businessObjective" placeholder="What care, access, safety, or operational problem should this solve?" required></textarea></label>
+              <label>Patients, care teams, and roles<textarea id="usersRoles" placeholder="Who is involved—patients, clinicians, coordinators, administrators—and what does each need to do?" required></textarea></label>
+            </div>
+            <div class="input-tip"><strong>Helpful detail</strong><span>Include who starts the workflow, what a good outcome looks like, and any handoffs between people.</span></div>
+          </section>
+          <section class="intake-page is-hidden" data-intake-page="3">
+            <div class="intake-page-heading"><span class="page-number">03</span><div><h2>Add any useful source material</h2><p>Policies, workflow notes, and existing requirements can help ground the project.</p></div></div>
+            <label class="upload-label">Supporting documents <span class="optional">Optional · PDF, DOCX, TXT, MD, or CSV</span><input id="files" type="file" accept=".txt,.md,.csv,.pdf,.docx" multiple></label>
+            <div class="intake-review"><p class="eyebrow">Your starting point</p><dl><div><dt>Care area and workflow</dt><dd id="intakeReviewWorkflow"></dd></div><div><dt>Goal</dt><dd id="intakeReviewObjective"></dd></div><div><dt>People involved</dt><dd id="intakeReviewRoles"></dd></div></dl></div>
+          </section>
+          <div class="intake-actions">
+            <button id="intakeBack" class="quiet-button" type="button" disabled>Back</button>
+            <span id="intakeStepLabel" class="muted">Step 1 of 3</span>
+            <button id="intakeContinue" type="button">Continue</button>
+            <button id="startInterview" class="is-hidden" type="button">Start guided interview</button>
+          </div>
+        </form>
+        <section id="interviewSession" class="interview-session stage-content is-hidden" data-stage="1" aria-live="polite">
+          <div class="interview-meta"><span id="questionProgress" class="state"></span><span id="answerCount" class="muted"></span></div>
+          <p id="questionTopic" class="eyebrow"></p>
+          <h2 id="interviewQuestion"></h2>
+          <textarea id="interviewAnswer" placeholder="Write the information you know. Specific rules, limits, conditions, and outcomes are especially useful."></textarea>
+          <div class="interview-actions"><button id="continueInterview" type="button">Save and continue</button><button id="skipInterviewQuestion" class="quiet-button" type="button">Skip for now</button></div>
+        </section>
+        <section id="interviewComplete" class="interview-complete stage-content is-hidden" data-stage="1">
+          <p class="eyebrow">Interview ready</p><h2>Turn the conversation into evidence-grounded requirements</h2>
+          <p id="interviewSummary" class="muted"></p>
+          <button id="createProject" type="button">Create project</button>
+        </section>
+        <section id="projectContextReview" class="context-review stage-content is-hidden" data-stage="1" aria-label="Saved care context">
+          <div><p class="eyebrow">Saved care context</p><h2 id="savedFunctionality"></h2></div>
+          <div class="context-grid"><div><span class="field-label">Objective</span><p id="savedObjective"></p></div><div><span class="field-label">Patients and roles</span><p id="savedRoles"></p></div></div>
+          <p id="savedSourceCount" class="muted"></p>
+        </section>
+        <p class="quiet">Avoid entering identifiable patient information. Drafts are advisory and require review by appropriate clinical, privacy, security, and operational owners.</p>
+      </section>
+
+      <nav class="steps" aria-label="Project setup steps">
+        <button class="step active" type="button" data-go-stage="1" aria-current="step"><span>01</span> Care context</button>
+        <button class="step" type="button" data-go-stage="2" disabled><span>02</span> Evidence</button>
+        <button class="step" type="button" data-go-stage="3" disabled><span>03</span> Review</button>
+        <button class="step" type="button" data-go-stage="4" disabled><span>04</span> Delivery</button>
+      </nav>
+
+      <section id="documentsPanel" class="panel stage-content is-hidden stage-hidden" data-stage="2" aria-labelledby="documents-title">
+        <div class="panel-title"><div><p class="eyebrow">Project evidence</p><h2 id="documents-title">Indexed care and policy sources</h2></div><button id="generateButton" type="button">Draft requirements</button></div>
+        <div id="ragSummary" class="rag-summary" aria-label="RAG index status"></div>
+        <div id="documentList" class="document-list"></div>
+        <div class="retrieval-toolbar"><label>Search project evidence<input id="retrievalQuery" placeholder="Search for a workflow, safety need, or policy detail"></label><button id="retrieveButton" type="button">Search</button><span id="retrievalCount" class="count"></span></div>
+        <div id="retrievalResults" class="retrieval-results"></div>
+      </section>
+
+      <section class="stage-content stage-hidden" data-stage="3">
+      <section id="requirementsPanel" class="panel is-hidden" aria-labelledby="requirements-title">
+          <div class="panel-title"><div><p class="eyebrow">Drafts · Expert review required</p><h2 id="requirements-title">Healthcare requirements</h2></div><span id="requirementCount" class="count"></span></div>
+        <div id="requirementsList" class="requirements-list"></div>
+      </section>
+
+      <section id="qualityPanel" class="panel is-hidden" aria-labelledby="quality-title">
+        <div class="panel-title"><div><p class="eyebrow">Quality analysis</p><h2 id="quality-title">Review queue</h2></div><span id="issueCount" class="count"></span></div>
+        <div id="issuesList" class="issues-list"></div>
+      </section>
+      <div class="stage-actions"><div><strong>Ready to plan delivery?</strong><p>Once the draft requirements have been reviewed, generate a delivery recommendation and project-specific checkpoints.</p></div><button class="sdlc-action" type="button">Build delivery recommendation</button></div>
+      </section>
+
+      <section id="sdlcPanel" class="panel stage-content is-hidden stage-hidden" data-stage="4" aria-labelledby="sdlc-title">
+        <div class="panel-title"><div><p class="eyebrow">Delivery advisory</p><h2 id="sdlc-title">Delivery approach</h2></div><button class="sdlc-action quiet-button" type="button">Reassess</button></div>
+        <div id="sdlcResult"></div>
+      </section>
+    </main>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="/static/app.js?v=care-intake-2"></script>
+  </body>
+</html>
