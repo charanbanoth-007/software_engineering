@@ -1,0 +1,12 @@
+Outpatient Follow-up Coordination - Example Source
+
+The service shall create a follow-up task when a care-team member records that a patient needs additional contact after an outpatient visit.
+Each task shall show its current status, assigned care-team role, due date, and next action.
+Only authorized care-team members shall be able to view or update tasks within their assigned service area.
+The system shall record task creation, assignment changes, status changes, and completion in an auditable event history.
+If a task is not completed by its due date, the system shall notify the assigned role and make the overdue task visible to the designated team lead.
+When a follow-up relates to a result that requires clinical review, the task shall be routed to a qualified clinician under the organization's approved clinical workflow.
+The system shall not interpret results, recommend treatment, or close a clinically flagged task without an authorized care-team decision.
+If a notification or connected system is unavailable, the task shall remain visible as pending and the failure shall be recorded for authorized staff to resolve.
+Patient-facing messages shall use organization-approved content and contact preferences, and shall not disclose sensitive details in an unapproved channel.
+The organization shall define access, retention, escalation, and response-time policies before the service is used in care delivery.
